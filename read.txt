@@ -1,0 +1,5 @@
+cd backend
+npm install express 
+npm init -y
+npm install path mongoose bcryptjs express-session crypto axios openai form-data dotenv
+node server.js

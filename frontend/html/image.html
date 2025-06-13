@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowerMind - 내 갤러리</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/responsive2.css">
+    <link rel="stylesheet" href="../assets/css/image.css">
+    <link rel="stylesheet" href="../assets/css/chatbot.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.12.1/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 헤더 -->
+        <div class="header">
+        <a href="/main" class="logo">FlowerMind</a>
+        <!-- 데스크탑용 헤더 메뉴 -->
+        <div class="header-menu desktop-only">
+          <a href="/image" button class="start-button-small" id="start-button">
+              <div class="start-text">생성하기</div>
+          </a>
+          <i id="archive-icon" class="bi bi-archive-fill archive"></i></a>
+          <a href="/mypage" class="login-text"><i class="bi bi-person-circle"></i></a>
+        </div>
+        <!-- 타블렛/모바일용 햄버거 메뉴 -->
+        <div class="hamburger-menu tablet-only mobile-only" id="hamburger-btn">
+          <div class="hamburger-line"></div>
+          <div class="hamburger-line"></div>
+          <div class="hamburger-line"></div>
+        </div>
+        
+        <!-- 슬라이드 메뉴 (모바일/태블릿) -->
+        <div class="slide-menu" id="slide-menu">
+          <div class="menu-items">
+            <a href="/mypage" class="menu-item"><i class="bi bi-person-circle"></i>&nbsp; 마이페이지</a>
+            <a href="/image" class="menu-item"><i class="bi bi-plus-square"></i>&nbsp; AI 이미지 만들기</a>
+            <a href="/gallery" class="menu-item"><i class="bi bi-archive-fill"></i>&nbsp; 내 보관함</a>
+            <a href="/" class="menu-item">로그아웃</a>
+          </div>
+        </div>
+        <!-- 슬라이드 메뉴 오버레이 -->
+        <div class="menu-overlay" id="menu-overlay"></div>
+      </div>
+        
+        <!-- 메뉴 오버레이 -->
+        <div class="menu-overlay" id="menu-overlay"></div>
+        
+        <!-- 메인 콘텐츠 -->
+
+        <main class="image-container">
+          <section class="image-header">
+            <div class="type-tittle">꽃 구성 형태</div>
+            <div class="flower-types">
+              <label><input type="radio" name="flowerType" value="1"/><img src="https://capstone-mogumogu-s3.s3.ap-northeast-2.amazonaws.com/images/bouquet.png" alt=""><div> 꽃 다발</div></label>
+              <label><input type="radio" name="flowerType" value="2"/><img src="https://capstone-mogumogu-s3.s3.ap-northeast-2.amazonaws.com/images/basket.png" alt=""><div> 꽃 바구니</div></label>
+              <label><input type="radio" name="flowerType" value="3" /><img src="https://capstone-mogumogu-s3.s3.ap-northeast-2.amazonaws.com/images/emptybucket.png" alt=""><div> 꽃 화분</div></label>
+              <label><input type="radio" name="flowerType" value="4"/><img src="https://capstone-mogumogu-s3.s3.ap-northeast-2.amazonaws.com/images/boximg.jpg" alt=""><div> 꽃 박스</div></label>
+            </div>
+          </section>
+
+
+          <section class="search-section">
+            <div class="search-left">
+              <form class="flower-search-form">
+                <!-- 드롭다운 -->
+                <fieldset>
+                  <legend>꽃 검색</legend>
+                    <div class="dropdown">
+                      <input type="text" id="dropdownInput" placeholder="검색...">
+                      <div class="dropdown-content" id="dropdownList"></div>
+                    </div>
+                </fieldset>
+
+                            
+                <!-- 계절 -->
+                 <div class="other-content">
+                  <fieldset>
+                    <legend>계절</legend>
+                    <div class="weather-toggle">
+                      <label>
+                        <input type="radio" name="season" value="봄"> 봄
+                      </label>
+                      <label>
+                        <input type="radio" name="season" value="여름"> 여름
+                      </label>
+                      <label>
+                        <input type="radio" name="season" value="가을"> 가을
+                      </label>
+                      <label>
+                        <input type="radio" name="season" value="겨울"> 겨울
+                      </label>
+                    </div>
+                  </fieldset>
+
+                          
+                  <!-- 색상 -->
+                  <fieldset>
+                    <legend>색상</legend>
+                    <div class="color-chart">
+                      <label class="color-toggle" style="background-color: red; color: white;">
+                        <input type="checkbox" name="color" value="빨강"> 빨강
+                      </label>
+                      <label class="color-toggle" style="background-color: orange; color: white;">
+                        <input type="checkbox" name="color" value="주황"> 주황
+                      </label>
+                      <label class="color-toggle" style="background-color: gold; color: white;">
+                        <input type="checkbox" name="color" value="노랑"> 노랑
+                      </label>
+                      <label class="color-toggle" style="background-color: green; color: white;">
+                        <input type="checkbox" name="color" value="초록"> 초록
+                      </label>
+                      <label class="color-toggle" style="background-color: blue; color: white;">
+                        <input type="checkbox" name="color" value="파랑"> 파랑
+                      </label>
+                      <label class="color-toggle" style="background-color: purple; color: white;">
+                        <input type="checkbox" name="color" value="보라"> 보라
+                      </label>
+                      <label class="color-toggle" style="background-color: pink; color: white;">
+                        <input type="checkbox" name="color" value="분홍"> 분홍
+                      </label>
+                      <label class="color-toggle" style="background-color: white;">
+                        <input type="checkbox" name="color" value="하양"> 하양
+                      </label>
+                      <label class="color-toggle" style="background-color: black; color: white;">
+                        <input type="checkbox" name="color" value="검정"> 검정
+                      </label>
+                    </div>
+                  </fieldset>
+                </div>
+
+
+              
+                <!-- 검색 버튼 -->
+                <div class="search-button-wrapper">
+                  <button type="submit">검색</button>
+                </div>
+              </form>
+            </div>
+            
+            <div class="search-right">
+              <div class="image-grid"></div>
+            </div>
+          </section>
+
+        </main>
+
+        <section class="basket-section">
+            <div class="basket-container">
+              <div class="basket-counter">
+                꽃바구니 (<span id="totalCount">0</span>/3)
+              </div>
+              <div id="basketItems" class="basket-items">
+                
+              </div>
+            </div>
+        </section>
+
+        <!-- 챗봇 토글 버튼 -->
+    <button class="chatbot-toggle" onclick="toggleChatbot()">
+        <svg viewBox="0 0 24 24">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
+        </svg>
+    </button>
+
+    <!-- 챗봇 창 -->
+    <div class="chatbot-container" id="chatbotContainer">
+        <div class="chatbot-header">
+            🌸 꽃 정보 도우미
+        </div>
+        <div class="chatbot-messages" id="chatbotMessages">
+            <div class="message bot">
+                안녕하세요! 꽃에 대해 궁금한 것이 있으시면 언제든 물어보세요. 현재 백합, 장미, 튤립에 대한 정보를 제공할 수 있습니다. 🌸
+            </div>
+        </div>
+        <div class="typing-indicator" id="typingIndicator">
+            <div class="typing-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div class="chatbot-input">
+            <input 
+                type="text" 
+                id="chatInput" 
+                placeholder="꽃에 대해 질문해보세요..."
+                onkeypress="handleKeyPress(event)"
+            >
+            <button onclick="sendMessage()" id="sendButton">전송</button>
+        </div>
+    </div>
+          
+        <button type="button" class="generate-image-btn" onclick="processInpainting()">이미지 생성하기</button>
+        <!-- 푸터 -->
+        <footer class="footer">
+            <div class="footer-logo">FlowerMind</div>
+            <div class="copyright">© 2025. ALL RIGHTS RESERVED.</div>
+        </footer>
+    </div>
+    
+    
+    <script src="../assets/js/menu.js"></script>
+    <script src="../assets/js/header.js"></script>
+    <script src="../assets/js/image.js"></script>
+    <script src="../assets/js/chatbot.js"></script>
+</body>
+</html>

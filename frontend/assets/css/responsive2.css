@@ -1,0 +1,252 @@
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+/* 반응형 스타일 */
+/* 데스크탑 (769px 이상) */
+@media screen and (min-width: 769px) {
+  .desktop-only {
+    display: flex;
+  }
+  
+  .tablet-only,
+  .mobile-only {
+    display: none;
+  }
+  
+  /* 데스크탑 전용 스타일 */
+  .flower-types {
+    justify-content: space-between;
+    flex-direction: row;
+  }
+  
+  .best-items {
+    flex-direction: row;
+  }
+  
+  .header {
+    padding: 1.5rem 2rem;
+  }
+  
+  .logo {
+    font-size: 2rem;
+  }
+  
+  .ai-section {
+    padding: 3rem 2rem;
+  }
+  
+  .flower-type {
+    flex-direction: row;
+  }
+}
+
+/* 타블렛 (394px - 768px) */
+@media screen and (min-width: 394px) and (max-width: 768px) {
+  .desktop-only,
+  .mobile-only {
+    display: none;
+  }
+  
+  .tablet-only {
+    display: block;
+  }
+  
+  /* 타블렛 전용 스타일 */
+  .header {
+    padding: 1rem 1.5rem;
+  }
+  
+  .logo {
+    font-size: 1.8rem;
+  }
+  
+  .best-items {
+    flex-direction: column;
+  }
+  
+  .best-item {
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
+  /* 구성 형태 2개씩 */
+  .flower-types {
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+  
+  .flower-type {
+    flex-direction: row;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .flower-type-image {
+    margin-right: 1rem;
+    margin-bottom: 0;
+  }
+  
+  .ai-cta {
+    padding: 1.5rem;
+  }
+  
+  .today-flower-section {
+    padding: 1.5rem;
+  }
+  
+  .section-title {
+    left: 1.5rem;
+  }
+  
+  .ai-title {
+    font-size: 1.4rem;
+  }
+
+  /*이미지 모달*/
+  .image-container {
+    width: 90vw;
+  }
+   
+  
+}
+
+/* 모바일 (393px 이하) */
+@media screen and (max-width: 393px) {
+  .desktop-only,
+  .tablet-only {
+    display: none;
+  }
+  
+  .mobile-only {
+    display: block;
+  }
+  
+  /* 모바일 전용 스타일 */
+  .header {
+    padding: 0.75rem 1rem;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+  }
+  
+  .hamburger-menu {
+    display: block;
+  }
+  
+  .flower-name {
+    font-size: 1.2rem;
+  }
+  
+  .flower-meaning {
+    font-size: 0.9rem;
+  }
+  
+  .section-title {
+    font-size: 0.9rem;
+    left: 1rem;
+  }
+  
+  .today-flower-section {
+    padding: 1.5rem 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .best-section {
+    padding: 1.5rem 1rem;
+  }
+  
+  .best-title {
+    font-size: 1.4rem;
+  }
+  
+  .best-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .best-items {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .best-item {
+    width: 100%;
+  }
+  
+  .best-image {
+    height: 150px;
+  }
+  
+  .ai-section {
+    padding: 1.5rem 1rem;
+  }
+  
+  .flower-types {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .flower-type {
+    flex-direction: column;
+    text-align: center;
+    padding: 0.75rem;
+  }
+  
+  .flower-type-image {
+    width: 60px;
+    height: 60px;
+    margin-right: 0;
+    margin-bottom: 0.75rem;
+  }
+  
+  .flower-type-title {
+    font-size: 1rem;
+  }
+  
+  .flower-type-desc {
+    font-size: 0.8rem;
+  }
+  
+  .ai-title {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .start-button {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .footer {
+    padding: 1.5rem 1rem;
+  }
+  
+  .footer-logo {
+    font-size: 1.2rem;
+  }
+  
+  .copyright {
+    font-size: 0.7rem;
+  }
+  
+  .more-images-text {
+    font-size: 0.9rem;
+  }
+
+  /*이미지 모달*/
+  .image-container {
+    width: 95vw;
+  }
+  
+}

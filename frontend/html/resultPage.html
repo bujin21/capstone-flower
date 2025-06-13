@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowerMind - 이미지 생성 완료</title>
+    <link rel="stylesheet" href="../assets/css/global.css"/>
+    <link rel="stylesheet" href="../assets/css/result.css">
+    <link rel="stylesheet" href="../assets/css/responsive2.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.12.1/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap" rel="stylesheet">
+    
+</head>
+<body>
+    <div class="container">
+        <!-- 헤더 -->
+        <div class="header">
+        <a href="/main" class="logo">FlowerMind</a>
+        <!-- 데스크탑용 헤더 메뉴 -->
+        <div class="header-menu desktop-only">
+          <a href="/image" button class="start-button-small" id="start-button">
+              <div class="start-text">생성하기</div>
+          </a>
+          <i id="archive-icon" class="bi bi-archive-fill archive"></i></a>
+          <a href="/mypage" class="login-text"><i class="bi bi-person-circle"></i></a>
+        </div>
+        <!-- 타블렛/모바일용 햄버거 메뉴 -->
+        <div class="hamburger-menu tablet-only mobile-only" id="hamburger-btn">
+          <div class="hamburger-line"></div>
+          <div class="hamburger-line"></div>
+          <div class="hamburger-line"></div>
+        </div>
+        
+        <!-- 슬라이드 메뉴 (모바일/태블릿) -->
+        <div class="slide-menu" id="slide-menu">
+          <div class="menu-items">
+            <a href="/mypage" class="menu-item"><i class="bi bi-person-circle"></i>&nbsp; 마이페이지</a>
+            <a href="/image" class="menu-item"><i class="bi bi-plus-square"></i>&nbsp; AI 이미지 만들기</a>
+            <a href="/gallery" class="menu-item"><i class="bi bi-archive-fill"></i>&nbsp; 내 보관함</a>
+            <a href="/" class="menu-item">로그아웃</a>
+          </div>
+        </div>
+        <!-- 슬라이드 메뉴 오버레이 -->
+        <div class="menu-overlay" id="menu-overlay"></div>
+      </div>
+        
+        <!-- 메뉴 오버레이 -->
+        <div class="menu-overlay" id="menu-overlay"></div>
+
+        <!-- 메인 콘텐츠 -->
+        <main class="result-section">
+            <div class="result-container" id="resultContainer">
+                <!-- JavaScript로 동적 생성됩니다 -->
+                <div class="loading">
+                    <p>결과를 불러오는 중...</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- 푸터 -->
+        <footer class="footer">
+            <div class="footer-logo">FlowerMind</div>
+            <div class="copyright">© 2025. ALL RIGHTS RESERVED.</div>
+        </footer>
+    </div>
+
+    <script src="/assets/js/menu.js"></script>
+    <script src="/assets/js/header.js"></script>
+    <script src="/assets/js/result.js"></script>
+    <script src="/assets/js/card.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+</body>
+</html>

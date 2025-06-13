@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/global.css" />
+    <link rel="stylesheet" href="../assets/css/responsive2.css" />
+    <link rel="stylesheet" href="../assets/css/chatbot.css" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.12.1/font/bootstrap-icons.min.css">
+    <title>FlowerMind - 당신만의 꽃다발</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <a href="/" class="logo">FlowerMind</a>
+        <!-- 데스크탑용 헤더 메뉴 -->
+        <div class="header-menu desktop-only">
+            <a href="/image" button class="start-button-small" id="start-button">
+              <div class="start-text">생성하기</div>
+            </a>
+          <i id="archive-icon" class="bi bi-archive-fill archive"></i></a>
+          <a href="/login" class="login-text">로그인</a>
+        </div>
+
+        <!-- 타블렛/모바일용 햄버거 메뉴 -->
+        <div class="hamburger-menu tablet-only mobile-only" id="hamburger-btn">
+          <div class="hamburger-line"></div>
+          <div class="hamburger-line"></div>
+          <div class="hamburger-line"></div>
+        </div>
+        
+        <!-- 슬라이드 메뉴 (모바일/태블릿) -->
+        <div class="slide-menu" id="slide-menu">
+          <div class="menu-items">
+            <a href="/login" class="menu-item"><i class="bi bi-box-arrow-in-right"></i>&nbsp; 로그인</a>
+            <a href="/sign" class="menu-item"><i class="bi bi-person-plus-fill"></i>&nbsp; 회원가입</a>
+          </div>
+        </div>
+        <!-- 슬라이드 메뉴 오버레이 -->
+        <div class="menu-overlay" id="menu-overlay"></div>
+      </div>
+      
+      <!-- 오늘의 꽃말 섹션 -->
+      <div class="today-flower-section">
+        <div class="today-flower-container default-ui">
+            <div class="flower-info">
+                <div class="flower-name"></div>
+                <div class="flower-meaning"></div>
+                <div class="flower-description">
+            
+                </div>
+            </div>
+            <img class="setting-icon" src="" />
+        </div>
+
+        <!-- 특별 기념일 UI (기본은 숨김) -->
+        <div class="today-flower-container event-ui" style="display: none;">
+            <div class="flower-info">
+                <div class="event-title"></div>
+                <div class="event-flower-name"></div>
+                <div class="event-flower-meaning"></div>
+                <div class="event-flower-description"></div>
+            </div>
+            <img class="event-flower-image" src="" />
+        </div>
+
+        <div class="section-title">오늘의 꽃말</div>
+      </div>
+
+      <!-- BEST 3 섹션 -->
+      <div class="best-section">
+        <div class="best-header">
+          <div class="best-title">BEST 3</div>
+          <div class="best-subtitle">인기많은 꽃 조합 순위를 보고 참고 하세요.</div>
+        </div>
+
+        <div class="best-items">
+          <!-- 1위 아이템 -->
+          <div class="best-item">
+            <img class="best-image" src="" alt=""/>  <!-- 생성한 꽃 이미지 -->
+            <div class="best-description">
+              <span>
+                <br />
+                <span class="like-text">꽃 조합 좋아요</span>
+                <span class="rank-number">1</span>
+                <span class="rank-text">위<br /></span>
+                <br />
+                <span class="combination-text"> <!-- 사용한 꽃 정보 -->
+                <br />
+                </span>
+              </span>
+            </div>
+          </div>
+
+          <!-- 2위 아이템 -->
+          <div class="best-item">
+            <img class="best-image" src="" alt=""/>
+            <div class="best-description">
+              <span>
+                <br />
+                <span class="like-text">꽃 조합 좋아요</span>
+                <span class="rank-number">2</span>
+                <span class="rank-text">위<br /></span>
+                <br />
+                <span class="combination-text">
+                <br />
+                </span>
+              </span>
+            </div>
+          </div>
+
+          <!-- 3위 아이템 -->
+          <div class="best-item">
+            <img class="best-image" src="" alt=""/>
+            <div class="best-description">
+              <span>
+                <br />
+                <span class="like-text">꽃 조합 좋아요</span>
+                <span class="rank-number">3</span>
+                <span class="rank-text">위<br /></span>
+                <br />
+                <span class="combination-text">
+                <br />
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- AI 꽃다발 섹션 -->
+        <section class="ai-section fade-in-up">
+            <div class="section-title" style="color: rgb(0, 0, 0);">AI 꽃다발</div>
+            <div class="flower-types">
+                <div class="flower-type fade-in-up">
+                    <div class="flower-type-image">💝</div>
+                    <div class="flower-type-content">
+                        <h3 class="flower-type-title">로맨틱</h3>
+                        <p class="flower-type-desc">사랑을 표현하는 완벽한 꽃다발로 특별한 사람에게 마음을 전해보세요.</p>
+                    </div>
+                </div>
+                <div class="flower-type fade-in-up">
+                    <div class="flower-type-image">🎉</div>
+                    <div class="flower-type-content">
+                        <h3 class="flower-type-title">축하</h3>
+                        <p class="flower-type-desc">기념일과 축하 자리에 어울리는 화려하고 밝은 꽃다발을 전해보세요.</p>
+                    </div>
+                </div>
+                <div class="flower-type fade-in-up">
+                    <div class="flower-type-image">🕊️</div>
+                    <div class="flower-type-content">
+                        <h3 class="flower-type-title">위로</h3>
+                        <p class="flower-type-desc">따뜻한 위로와 격려의 마음을 담은 부드러운 색상의 꽃을 전해보세요</p>
+                    </div>
+                </div>
+            </div>
+            <div class="ai-cta fade-in-up">
+                <h3 class="ai-title">당신만의 꽃다발을 만들어 보세요!</h3>
+                <button class="start-button"><a href="/image">시작하기</a></button>
+            </div>
+        </section>
+        <!-- 이미지 모달 -->
+        <div id="image-modal" class="image-modal hidden">
+          <span class="close-modal" onclick="closeModal()">&times;</span>
+          <img class="modal-content" id="modal-img" />
+        </div>
+      <!-- 푸터 섹션 -->
+      <div class="footer">
+        <div class="footer-logo">FlowerMind</div>
+        <div class="copyright">© 2025. ALL RIGHTS RESERVED.</div>
+      </div>
+    </div>
+  <script>
+  // 이미지 클릭 시 모달 표시
+  const bestImages = document.querySelectorAll(".best-image");
+  const modal = document.getElementById("image-modal");
+  const modalImg = document.getElementById("modal-img");
+
+  bestImages.forEach(img => {
+    img.addEventListener("click", () => {
+      if (img.src) {
+        modal.style.display = "block";
+        modalImg.src = img.src;
+      }
+    });
+  });
+
+  function closeModal() {
+    modal.style.display = "none";
+    modalImg.src = "";
+  }
+
+  // esc 누르면 닫기
+  window.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") closeModal();
+  });
+</script>
+    <script src="../assets/js/menu.js"></script>
+    <script src="../assets/js/header.js"></script>
+    <script src="../assets/js/momomo.js"></script>
+    <script src="../assets/js/chatbot.js"></script>
+    <script src="../assets/js/specialday.js"></script>
+  </body>
+</html>
