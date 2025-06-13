@@ -112,11 +112,6 @@
   .ai-title {
     font-size: 1.4rem;
   }
-
-  /*이미지 모달*/
-  .image-container {
-    width: 90vw;
-  }
    
   
 }
@@ -243,10 +238,4 @@
   .more-images-text {
     font-size: 0.9rem;
   }
-
-  /*이미지 모달*/
-  .image-container {
-    width: 95vw;
-  }
-  
 }
