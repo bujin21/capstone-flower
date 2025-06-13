@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../assets/css/gallery.css">
     <link rel="stylesheet" href="../assets/css/chatbot.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.12.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
@@ -67,24 +68,21 @@
             <p>당신이 저장한 꽃 이미지들을 확인해보세요.</p>
           </section>
 
-          <!-- 필터 영역 -->
+        <!-- 필터 영역 -->
+        <div class="filter-bar">
+
+          <!-- 검색창 -->
+          <div class="search-container">
+            <form class="search-box" action="" method="get">
+              <input class="search-txt" type="text" placeholder="검색어를 입력하세요.">
+              <button class="search-btn" type="submit">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+              </button>
+            </form>
+          </div>
+
+          <!-- 드롭다운 필터 -->
           <form class="gallery-filter-form" style="display: flex; gap: 10px; padding: 10px 20px;">
-            <!-- 월별 필터 -->
-            <select id="filter-month">
-              <option value="전체 월">전체 월</option>
-              <option value="1월">1월</option>
-              <option value="2월">2월</option>
-              <option value="3월">3월</option>
-              <option value="4월">4월</option>
-              <option value="5월">5월</option>
-              <option value="6월">6월</option>
-              <option value="7월">7월</option>
-              <option value="8월">8월</option>
-              <option value="9월">9월</option>
-              <option value="10월">10월</option>
-              <option value="11월">11월</option>
-              <option value="12월">12월</option>
-            </select>
 
             <!-- 색상 필터 -->
             <select id="filter-color">
@@ -108,8 +106,12 @@
               <option value="꽃화분">꽃화분</option>
               <option value="플라워박스">플라워박스</option>
             </select>
+            <!-- 필터 적용 버튼 -->
             <button type="submit">적용</button>
+            <!-- 필터 초기화 버튼 -->
+            <button type="button" id="resetFilters">초기화</button>
           </form>
+        </div>
           
           <!-- 내 보관함 -->
           <section class="image-grid tab-content" id="my-images">
