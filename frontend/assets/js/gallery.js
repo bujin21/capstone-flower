@@ -36,6 +36,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             activeTab = e.target.getAttribute('data-tab');
             
+
+            // 검색어 초기화 추가
+            searchInput.value = '';
+            searchQuery = '';
+
             // 모든 탭 컨텐츠 숨기기
             Object.values(imageGrids).forEach(grid => {
                 if (grid) grid.classList.add('hidden');
@@ -49,12 +54,25 @@ document.addEventListener('DOMContentLoaded', () => {
             currentPage = 1;
             currentGroupStartPage = 1;
 
-            document.getElementById('filter-month').value = '전체 월';
             document.getElementById('filter-color').value = '전체색깔';
             document.getElementById('filter-type').value = '전체타입';
             
             loadImages(1);
         }
+    });
+
+    // 검색 이벤트 리스너 추가
+    const searchForm = document.querySelector('.search-box');
+    const searchInput = document.querySelector('.search-txt');
+
+    searchForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        searchQuery = searchInput.value.trim(); // 입력된 검색어 저장
+        currentPage = 1; // 검색 시 첫 페이지로 이동
+        loadImages(1);   // 이미지 다시 로드
+
+        //searchInput.value = ''; // 검색창 초기화
     });
 
     // 서버에서 이미지 로드
@@ -64,6 +82,15 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('현재 탭:', activeTab);
             console.log('페이지:', page);
 
+            const searchKeyword = searchInput?.value.trim() || '';
+
+            // 색상/타입 필터 값 읽기
+            const rawColor = document.getElementById('filter-color')?.value;
+            const rawType = document.getElementById('filter-type')?.value;
+            const color = rawColor !== '전체색깔' ? rawColor : '';
+            const type = rawType !== '전체타입' ? rawType : '';
+
+            // 탭에 따라 API 엔드포인트 결정
             let endpoint;
             switch (activeTab) {
                 case 'my-images':
@@ -80,27 +107,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
             }
 
-            // 필터 값 가져오기
-            const rawMonth = document.getElementById('filter-month').value;
-            const rawColor = document.getElementById('filter-color').value;
-            const rawType = document.getElementById('filter-type').value;
-
-            const month = rawMonth !== '전체 월' ? rawMonth.replace('월', '') : '';
-            const color = rawColor !== '전체색깔' ? rawColor : '';
-            const type = rawType !== '전체타입' ? rawType : '';
-
             // URL 파라미터 구성
             const params = new URLSearchParams({
                 page,
                 limit: imagesPerPage,
-                ...(month && { month }),
+                ...(searchKeyword && { search: searchKeyword }),
                 ...(color && { color }),
                 ...(type && { type }),
             });
 
-            const url = `${endpoint}?${params}`;
+            const url = `${endpoint}?${params.toString()}`;
             console.log('요청 URL:', url);
 
+            // API 호출
             const response = await fetch(url);
             const result = await response.json();
 
@@ -124,6 +143,16 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault(); // form 제출로 인한 페이지 새로고침 방지
         currentPage = 1;
         loadImages(1);
+    });
+
+    // button 이벤트 처리(눌렀을 때 초기화)
+    document.getElementById('resetFilters').addEventListener('click', function () {
+        document.getElementById('filter-color').value = '전체색깔';
+        document.getElementById('filter-type').value = '전체타입';
+        searchInput.value = ''; // 검색어 입력창 초기화
+        searchQuery = '';       // 검색 상태 변수도 초기화
+        currentPage = 1;
+        loadImages(1); // 초기화 후에도 갤러리 새로 불러오기
     });
 
     // 사용자의 좋아요 상태 로드
@@ -275,7 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         grid.innerHTML = `
             <div class="no-images">
-                <p>현재 저장된 이미지가 없습니다.</p>
+                <p>표시할 이미지가 없습니다.</p>
             </div>
         `;
         
