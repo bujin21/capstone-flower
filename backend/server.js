@@ -238,23 +238,17 @@ app.post('/update-password', async (req, res) => {
 // 회원 탈퇴
 app.get('/delete', async (req, res) => {
   const userId = req.session.userId;
-  if (!userId) {
-    return res.status(401).json({ success: false, message: '로그인한 사용자만 탈퇴할 수 있습니다.' });
-  }
+  if (!userId) return res.status(401).send('로그인한 사용자만 탈퇴할 수 있습니다.');
 
   try {
     await User.deleteOne({ _id: userId });
-
     req.session.destroy(err => {
-      if (err) {
-        return res.status(500).json({ success: true, message: '탈퇴는 되었으나 로그아웃에 실패했습니다.' });
-      }
-
+      if (err) return res.status(500).send('탈퇴는 되었으나 로그아웃에 실패했습니다.');
       res.clearCookie('connect.sid');
-      return res.status(200).json({ success: true, message: '회원 탈퇴가 완료되었습니다.' });
+      res.status(200).send('회원 탈퇴가 완료되었습니다.');
     });
   } catch (error) {
-    return res.status(500).json({ success: false, message: '서버 오류로 탈퇴에 실패했습니다.' });
+    res.status(500).send('서버 오류로 탈퇴에 실패했습니다.');
   }
 });
 
@@ -404,26 +398,34 @@ app.get('/download-image', async (req, res) => {
 
 //프론트엔드에서 전달된 month, color, type을 기반으로 MongoDB에서 해당 조건을 만족하는 데이터를 찾아주는 역할
 const buildFilterQuery = (req) => {
-  const { month, color, type } = req.query;
-  const query = {};
+  const search = req.query.search?.trim() || '';
+  const color = req.query.color?.trim() || '';
+  const type = req.query.type?.trim() || '';
 
-  // 월 필터 (ex: '5월' → 5)
-  if (month && month !== '전체 월') {
-    const monthNumber = parseInt(month.replace('월', ''));
-    query.$expr = { $eq: [{ $month: "$createdAt" }, monthNumber] };
-  }
+  const andConditions = [];
 
-  // 색상 필터
   if (color && color !== '전체색깔') {
-    query.flowerColor = color;
+    andConditions.push({ flowerColor: color });
   }
 
-  // 타입 필터 (배경 종류)
   if (type && type !== '전체타입') {
-    query.backgroundType = type;
+    andConditions.push({ backgroundType: type });
   }
 
-  return query;
+  if (search) {
+    const regex = new RegExp(search, 'i'); // 대소문자 무시
+    andConditions.push({
+      $or: [
+        { flowerName: regex },
+        { flowerColor: regex },
+        { backgroundType: regex }
+      ]
+    });
+  }
+
+  if (andConditions.length === 0) return {};
+  if (andConditions.length === 1) return andConditions[0];
+  return { $and: andConditions };
 };
 
 // 내 이미지 조회 (개인 보관함)
@@ -437,16 +439,43 @@ app.get('/my-images', async (req, res) => {
     const limit = parseInt(req.query.limit) || 15;
     const skip = (page - 1) * limit;
 
-    const filter = buildFilterQuery(req);
-    const baseQuery = { userId: req.session.userId, ...filter };
+    const search = req.query.search?.trim() || '';
+    const color = req.query.color?.trim() || '';
+    const type = req.query.type?.trim() || '';
 
-    const images = await Image.find(baseQuery)
+    // 필터 조건 및 검색 조건을 포함한 AND 조건 배열 구성
+    const andConditions = [{ userId: req.session.userId }];
+
+    if (color && color !== '전체색깔') {
+      andConditions.push({ flowerColor: color });
+    }
+
+    if (type && type !== '전체타입') {
+      andConditions.push({ backgroundType: type });
+    }
+
+    if (search) {
+      const regex = new RegExp(search, 'i'); // 대소문자 구분 없이 검색
+      andConditions.push({
+        $or: [
+          { flowerName: regex },
+          { flowerColor: regex },
+          { backgroundType: regex }
+        ]
+      });
+    }
+
+    // AND 조건이 여러 개면 $and 사용, 아니면 단일 조건
+    const query = andConditions.length > 1 ? { $and: andConditions } : andConditions[0];
+
+    // DB 쿼리 실행
+    const images = await Image.find(query)
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
       .populate('userId', 'name userid');
 
-    const total = await Image.countDocuments(baseQuery);
+    const total = await Image.countDocuments(query);
 
     res.json({
       success: true,
