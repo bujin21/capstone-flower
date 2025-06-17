@@ -163,86 +163,67 @@ exports.handler = async (event) => {
 
         // MongoDB 트랜잭션 시작
         const session = await mongoose.startSession();
-        
+
+        let s3DeletePromise = null;
+
         try {
-            await session.withTransaction(async () => {
-                // 이미지 존재 여부 및 권한 확인
-                const image = await ImageModel.findOne({ 
-                    _id: new mongoose.Types.ObjectId(imageId), 
-                    userId: new mongoose.Types.ObjectId(userId) 
-                }).session(session);
+            // 1. DB에서 이미지 정보 먼저 찾기 (트랜잭션 외부)
+            const image = await ImageModel.findOne({
+                _id: new mongoose.Types.ObjectId(imageId),
+                userId: new mongoose.Types.ObjectId(userId)
+            });
 
-                if (!image) {
-                    throw new Error('이미지를 찾을 수 없거나 삭제 권한이 없습니다.');
-                }
+            if (!image) {
+                throw new Error('이미지를 찾을 수 없거나 삭제 권한이 없습니다.');
+            }
 
-                console.log('삭제할 이미지 정보:', {
-                    id: image._id,
-                    url: image.imageUrl,
-                    flowerNames: image.flowerName
-                });
+            console.log('삭제할 이미지 정보:', {
+                id: image._id,
+                url: image.imageUrl,
+                flowerNames: image.flowerName
+            });
 
-                // S3에서 이미지 파일 삭제
-                if (image.imageUrl) {
-                    try {
-                        const s3Key = extractS3KeyFromUrl(image.imageUrl);
-                        console.log('삭제할 S3 키:', s3Key);
-                        
-                        // S3 키가 예상 경로에 있는지 확인
-                        if (!s3Key.startsWith('images/generated-flowers/')) {
-                            console.warn(`예상과 다른 경로의 이미지입니다: ${s3Key}`);
-                        }
+            // 2. S3 삭제 비동기로 먼저 준비 (await 하지 않음)
+            if (image.imageUrl) {
+                try {
+                    const s3Key = extractS3KeyFromUrl(image.imageUrl);
+                    console.log('삭제할 S3 키:', s3Key);
 
-                        const deleteParams = {
-                            Bucket: 'capstone-mogumogu-s3',
-                            Key: s3Key
-                        };
-
-                        console.log('S3 삭제 요청 파라미터:', deleteParams);
-                        
-                        // S3에서 객체 존재 여부 먼저 확인 (선택사항)
-                        try {
-                            await s3.headObject(deleteParams).promise();
-                            console.log('S3 객체 존재 확인됨');
-                        } catch (headError) {
-                            if (headError.code === 'NotFound') {
-                                console.warn('S3에서 파일을 찾을 수 없음, DB 삭제만 진행');
-                            } else {
-                                console.warn('S3 객체 확인 중 오류:', headError.message);
-                            }
-                        }
-                        
-                        // S3에서 실제 삭제 실행
-                        const deleteResult = await s3.deleteObject(deleteParams).promise();
-                        console.log('S3 이미지 삭제 완료:', deleteResult);
-                        
-                    } catch (s3Error) {
-                        console.error('S3 삭제 오류 상세:', {
-                            error: s3Error.message,
-                            code: s3Error.code,
-                            statusCode: s3Error.statusCode,
-                            url: image.imageUrl
-                        });
-                        
-                        // S3 삭제 실패해도 DB 삭제는 계속 진행
-                        console.warn('S3 삭제 실패했지만 DB 삭제는 계속 진행합니다.');
+                    if (!s3Key.startsWith('images/generated-flowers/')) {
+                        console.warn(`예상과 다른 경로의 이미지입니다: ${s3Key}`);
                     }
-                } else {
-                    console.warn('이미지 URL이 없습니다, DB 삭제만 진행');
-                }
 
-                // 관련된 좋아요들 삭제
-                const deletedLikes = await LikeModel.deleteMany({ 
-                    imageId: new mongoose.Types.ObjectId(imageId) 
+                    const deleteParams = {
+                        Bucket: 'capstone-mogumogu-s3',
+                        Key: s3Key
+                    };
+
+                    console.log('S3 삭제 요청 파라미터:', deleteParams);
+
+                    // 비동기 삭제 시작
+                    s3DeletePromise = s3.deleteObject(deleteParams).promise();
+                } catch (s3PrepareError) {
+                    console.error('S3 삭제 준비 중 오류:', s3PrepareError);
+                    // 삭제 실패해도 DB 삭제는 계속 진행
+                }
+            } else {
+                console.warn('이미지 URL이 없습니다, DB 삭제만 진행');
+            }
+
+            // 3. 트랜잭션으로 MongoDB 처리
+            await session.withTransaction(async () => {
+                // 관련 좋아요 삭제
+                const deletedLikes = await LikeModel.deleteMany({
+                    imageId: new mongoose.Types.ObjectId(imageId)
                 }).session(session);
-                
+
                 console.log(`관련 좋아요 ${deletedLikes.deletedCount}개 삭제됨`);
-                
-                // MongoDB에서 이미지 레코드 삭제
-                const deletedImage = await ImageModel.deleteOne({ 
-                    _id: new mongoose.Types.ObjectId(imageId) 
+
+                // 이미지 레코드 삭제
+                const deletedImage = await ImageModel.deleteOne({
+                    _id: new mongoose.Types.ObjectId(imageId)
                 }).session(session);
-                
+
                 console.log('MongoDB 이미지 레코드 삭제 완료:', deletedImage);
 
                 if (deletedImage.deletedCount === 0) {
@@ -252,15 +233,28 @@ exports.handler = async (event) => {
 
             console.log('이미지 삭제 트랜잭션 완료');
 
+            // 4. 트랜잭션 이후에 S3 삭제 기다리기
+            if (s3DeletePromise) {
+                try {
+                    const deleteResult = await s3DeletePromise;
+                    console.log('S3 이미지 삭제 완료:', deleteResult);
+                } catch (s3FinalError) {
+                    console.error('S3 삭제 실패:', s3FinalError.message);
+                }
+            }
+
             return {
                 statusCode: 200,
-                headers,
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Access-Control-Allow-Origin': '*', // CORS 허용 (필요 시)
+                },
                 body: JSON.stringify({
-                    success: true,
-                    message: '이미지가 성공적으로 삭제되었습니다.',
-                    deletedImageId: imageId
+                  success: true,
+                  message: '이미지가 성공적으로 삭제되었습니다.',
+                  deletedImageId: imageId
                 })
-            };
+              };
 
         } finally {
             await session.endSession();
