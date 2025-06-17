@@ -434,26 +434,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 삭제 확인 모달
     confirmBtn.addEventListener('click', async () => {
-        if (imageToDelete) {
-            try {
-                const response = await fetch(`/delete-image/${imageToDelete}`, {
-                    method: 'DELETE'
-                });
+        if (!imageToDelete) return;
 
-                const result = await response.json();
-                if (result.success) {
-                    alert('이미지가 삭제되었습니다.');
-                    loadImages(currentPage);
-                } else {
-                    alert(result.message || '이미지 삭제에 실패했습니다.');
-                }
-            } catch (error) {
-                console.error('이미지 삭제 오류:', error);
-                alert('이미지 삭제 중 오류가 발생했습니다.');
-            }
-        }
+        const targetId = imageToDelete; // 🔐 안전하게 복사
+
+        // UI 반영 먼저
+        currentImages = currentImages.filter(img => img._id !== targetId);
+        renderImages();
+
         modal.classList.add('hidden');
         imageToDelete = null;
+
+        try {
+            const response = await fetch(`/delete-image/${targetId}`, {
+                method: 'DELETE'
+            });
+
+            const result = await response.json();
+            if (!result.success) {
+                alert('삭제 실패: ' + (result.message || 'Lambda 함수 호출 실패'));
+                loadImages(currentPage); // 실패 시 복구
+            }
+        } catch (error) {
+            console.error('삭제 중 오류:', error);
+            alert('서버 오류로 삭제 실패');
+            loadImages(currentPage);
+        }
     });
 
     // 삭제 취소
