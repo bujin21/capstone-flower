@@ -352,21 +352,59 @@ async function processInpainting() {
     }
 
     // 로딩 표시
-    const loadingAlert = document.createElement('div');
-    loadingAlert.style.cssText = `
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        z-index: 1000;
-        text-align: center;
-    `;
-    loadingAlert.innerHTML = '<p>이미지를 생성하고 있습니다...<br>잠시만 기다려주세요.</p>';
-    document.body.appendChild(loadingAlert);
+const loadingAlert = document.createElement('div');
+loadingAlert.style.cssText = `
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    z-index: 1000;
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+`;
+
+loadingAlert.innerHTML = `
+  <div style="font-size: 1.2rem; font-weight: bold;">이미지를 생성하고 있습니다<span id="dot-animation">.</span></div>
+  <div style="margin-top: 10px; font-size: 2rem;">
+    <span class="flower">🌸</span>
+    <span class="flower">🌼</span>
+    <span class="flower">🌺</span>
+  </div>
+`;
+
+document.body.appendChild(loadingAlert);
+
+// 점 애니메이션
+let dotCount = 1;
+const dotInterval = setInterval(() => {
+  const dotEl = document.getElementById('dot-animation');
+  dotEl.textContent = '.'.repeat(dotCount);
+  dotCount = (dotCount % 3) + 1;
+}, 500);
+
+// 🌸 꽃 이모지 흔들기 애니메이션
+const style = document.createElement('style');
+style.innerHTML = `
+  .flower {
+    display: inline-block;
+    animation: swing 1.2s ease-in-out infinite;
+  }
+  .flower:nth-child(2) { animation-delay: 0.2s; }
+  .flower:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes swing {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(10deg); }
+    50% { transform: rotate(0deg); }
+    75% { transform: rotate(-10deg); }
+    100% { transform: rotate(0deg); }
+  }
+`;
+document.head.appendChild(style);
 
     const selectoption = selectedOption.value;
     
