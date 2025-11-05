@@ -11,5 +11,5 @@ flowermind웹 메인 홈 화면
 이미지 보관 화면
 <img width="1569" height="1213" alt="Image" src="https://github.com/user-attachments/assets/f2c3d7f1-6a4a-49b6-855b-58c568359921" />
 
-이미지 삭제화면
+이미지 저장 및 삭제화면
 <img width="1599" height="1211" alt="Image" src="https://github.com/user-attachments/assets/cde62cf9-8e26-4000-a2a6-4a73ab0ec304" />
