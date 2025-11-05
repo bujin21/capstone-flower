@@ -4,3 +4,6 @@ flowermind웹 메인 홈 화면
 
 이미지 생성 페이지
 <img width="1724" height="1239" alt="Image" src="https://github.com/user-attachments/assets/687e8137-1487-4499-afae-2da741f0dc2a" />
+
+이미지 결과 화면
+<img width="1076" height="1276" alt="Image" src="https://github.com/user-attachments/assets/f84de369-d579-4dbc-b78d-420604b2d449" />
