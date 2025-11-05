@@ -7,3 +7,6 @@ flowermind웹 메인 홈 화면
 
 이미지 결과 화면
 <img width="1076" height="1276" alt="Image" src="https://github.com/user-attachments/assets/f84de369-d579-4dbc-b78d-420604b2d449" />
+
+이미지 보관 화면
+<img width="1569" height="1213" alt="Image" src="https://github.com/user-attachments/assets/f2c3d7f1-6a4a-49b6-855b-58c568359921" />
